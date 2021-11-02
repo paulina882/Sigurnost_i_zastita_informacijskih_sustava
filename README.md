@@ -1,0 +1,2 @@
+# Sigurnost_i_zastita_informacijskih_sustava
+Vjezbe iz sigurnosti
