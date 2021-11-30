@@ -1,9 +1,12 @@
 import sqlite3
+import time
 from datetime import date
+
+
 print('Dobrodošli u Unidu sustav')
-print('Za prijavu unesite broj 1, za registraciju broj 2:')
+print('Za prijavu unesite broj 1, za registraciju broj 2, za zaboravljenu lozinku 3:')
 broj=0
-dopusteni=[1,2]
+dopusteni=[1,2, 3]
 brojac=0
 
 def login():
@@ -27,6 +30,24 @@ def login():
                 cur.execute("update users SET br_prijava = ? where email = ?", (brojac ,email))
                 con.commit()
                 con.close()
+def forgot():
+        email=input('Unesite email:')
+        con=con = sqlite3.connect('baza.db')
+        cur = con.cursor()
+        korisnik=cur.execute("SELECT email FROM users WHERE email = ?", (email))
+        korisnik=cur.fetchone();
+        if (korisnik==None):
+                
+                print("Uneseni email se ne nalazi u bazi!")
+                return
+        else:
+                hashv=hash(time.time())
+                print(hashv)
+                
+                cur.execute("INSERT INTO forgot_password(user_id, hash, valid_until) VALUES (?, ?, ?)",(hashv, ))
+        
+
+        
         
 def register_user():
         con=con = sqlite3.connect('baza.db')
@@ -47,8 +68,11 @@ if broj==1:
     print("Dobrodošli u Prijavu!")
     login()
 if broj==2:
-    print("Dobrodošli u registraciju!")
-    register_user()
+        print("Dobrodošli u registraciju!")
+        register_user()
+if broj==3:
+        print("Dobrodošli u promjenu lozinke!")
+        forgot()
     
 
 
